@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="style.css">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+  </head>
+  <body>
+    <h1>Welcome, <%= user %></h1>
+    <a href="/admin/logout">Logout</a>
+
+    <h2>Add profile photo</h2>
+    <form action="/admin/profile" enctype="multipart/form-data" method="post">
+      <input type="file" name="image" accept="image/*" required />
+      <button>Add image</button>
+    </form>
+
+    <h2>Update About</h2>
+    <form action="/admin/update-about" method="POST">
+      <textarea name="about" rows="5"><%= main.about %></textarea>
+      <button type="submit">Update About</button>
+    </form>
+
+    <h2>your skills</h2>
+     <div class="skills-grid"></div>
+    <% for(let  skill of main.skills) {%>
+
+    <div class="skill-tag"><%= skill%> <a href="/admin/delete-skill/<%=encodeURIComponent(skill) %>">X</a></div>
+    <%}%>
+    </div>
+
+    <h2>Add Skill</h2>
+    <form action="/admin/add-skill" method="POST">
+      <input type="text" name="skill" placeholder="Skill name" required />
+      <button type="submit">Add Skill</button>
+    </form>
+
+
+    <% main.project.forEach(proj => { %>
+  <div class="box">
+    <div class="img-container">
+      <img src="<%= proj.image %>" alt="<%= proj.title %>">
+      <a href="<%= proj.link %>" target="_blank" class="view-link">
+        <i class="fa-solid fa-eye"></i>
+      </a>
+    </div>
+    <h4><%= proj.title %></h4>
+    <p><%= proj.description %></p>
+
+    <a href="/admin/project-edit/<%=proj._id %>">edit </a>
+    <a href="/admin/project-delete/<%=proj._id %>">delete </a>
+
+  </div>
+<% }) %>
+
+
+    <h2>Add Project</h2>
+    <form action="/admin/add-project" enctype="multipart/form-data" method="POST">
+      <input
+        type="text"
+        name="title"
+        placeholder="Project title"
+        required
+      /><br />
+      <input
+        type="text"
+        name="description"
+        placeholder="Description"
+        required
+      /><br />
+      <input type="file" name="image" accept="image/*" required /><br />
+      <input type="text" name="link" placeholder="Project link" /><br />
+      <button type="submit">Add Project</button>
+    </form>
+  </body>
+</html>

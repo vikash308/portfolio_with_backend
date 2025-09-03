@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vikash's Portfolio</title>
+    <link rel="shortcut icon" href="./Photos/fav.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+</head>
+
+<body>
+     <div class="nav">
+        <ul>
+            <h3>Vikash</h3>
+            <li class="navBtn"><a href="/">Home</a></li>
+            <li class="navBtn"><a href="#project">Projects</a></li>
+            <li class="navBtn"><a href="#contact">Contact</a></li>
+          <li class="navBtn"><a href="/login">Edit </a></li>
+        </ul>
+      </div>
+    <main class="main">
+        
+        <button id="theme-toggle" class="theme-btn">
+            <i class="fa-solid fa-sun"></i>
+        </button>
+
+        <aside class="side">
+            <div class="first">
+                <img src="<%= main.image%>" alt="Vikash Photo">
+                <div>
+                    <h2>Vikash Pandey</h2>
+                    <p>FullStack Developer</p>
+                </div>
+            </div>
+            <div class="second">
+                <div class="contact-item"><a href="https://linkedin.com/in/vikash308" target="_blank"><i
+                            class="fa-brands fa-linkedin"></i><span>LinkedIn</span></a>
+                </div>
+                <div class="contact-item"><a href="https://github.com/vikash308" target="_blank"><i
+                            class="fa-brands fa-github"></i><span>GitHub</span></a></div>
+                <div class="contact-item"><i class="fa-solid fa-phone"></i><span>+91 62035 61308</span></div>
+                <div class="contact-item"><i class="fa-solid fa-envelope"></i><span>vp946203@gmail.com</span></div>
+
+            </div>
+        </aside>
+
+        <div class="content">
+            <div class="about">
+                <h1>About me</h1>
+                <p>
+                    <%= main.about %>
+                </p>
+                <div class="line"></div>
+                <div class="education ">
+                    <h1>Education</h1>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Bachelor of Computer Applications (BCA)</h3>
+                                <span>2023 – 2026</span>
+                                <p>Currently pursuing BCA to build a strong foundation in programming, databases, and
+                                    web technologies.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Sigma 8.0 – Apna College</h3>
+                                <span>Online Course</span>
+                                <p>Learned MERN Stack (MongoDB, Express, React, Node.js) and DSA with Java through
+                                    projects and
+                                    problem-solving.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line"></div>
+
+                    <div class="skill">
+                        <h1>My Skills</h1>
+                        <div class="skills-grid">
+                            <% for(skill of main.skills) {%>
+                                
+                                <div class="skill-tag"><%= skill%></div>
+                            <%}%>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+               <div class="line"></div>
+
+            <div class="project" id="project">
+                <h1>Projects</h1>
+                <div class="project-list">
+                   <% if(project) {%>
+                  <%for(proj of project){%>
+                    <div class="box">
+              <div class="img-container">
+                <img src="<%=proj.image%>" alt="Weather App">
+                <a href="<%=proj.link%>" target="_blank" class="view-link">
+                  <i class="fa-solid fa-eye"></i>
+                </a>
+              </div>
+              <h4><%=proj.title%></h4>
+              <p><%=proj.description%></p>
+            </div>
+                    <%}%>
+                    <%}%>
+                       
+                </div>
+            </div>
+               <div class="line"></div>
+
+            <div class="contact" id="contact">
+                <h1>Contact Me</h1>
+                <p>I'd love to hear from you! Fill out the form below or email me directly at <a
+                        href="mailto:vp946203@gmail.com">vp946203@gmail.com</a></p>
+
+                <form class="contact-form" action="mailto:vp946203@gmail.com" method="POST" enctype="text/plain">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+    </main>
+</body>
+
+</html>

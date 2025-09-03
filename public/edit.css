@@ -1,0 +1,90 @@
+:root {
+    --bg-black: hsl(0, 0%, 7%);
+    --font-color: #fafafa;
+    --sec-black: #2b2b2c;
+    --border: 1px solid rgba(255, 255, 255, 0.2);
+    --shadow: 0px 4px 12px hsla(0, 0%, 0%, 0.25);
+    --orange-font: hsl(45, 100%, 72%);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-black);
+    color: var(--font-color);
+    padding: 2rem;
+    width: 100vw;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--orange-font);
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--orange-font);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    display: inline-block;
+}
+
+a:hover {
+    color: #fff;
+}
+
+form {
+    background-color: var(--sec-black);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    margin-top: 1rem;
+    width: 80%;
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+form input[type="text"],
+form textarea,
+form input[type="file"] {
+    width: 100%;
+    padding: 10px 30px;
+    border-radius: 8px;
+    border: var(--border);
+    background-color: var(--bg-black);
+    color: var(--font-color);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: var(--orange-font);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    color: black;
+    font-size: 1rem;
+}
+
+form button:hover {
+    background-color: goldenrod;
+}
+
+form img {
+    margin-top: 10px;
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}

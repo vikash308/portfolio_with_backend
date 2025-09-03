@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Project</title>
+  <link rel="stylesheet" href="/edit.css">
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+  <h1>Edit Project</h1>
+  <a href="/admin">Back to Admin</a>
+
+  <form action="/admin/project-edit/<%= project._id %>" method="POST" enctype="multipart/form-data">
+    <label>Title:</label>
+    <input type="text" name="title" value="<%= project.title %>" required /><br><br>
+
+    <label>Description:</label>
+    <textarea name="description" rows="5" required><%= project.description %></textarea><br><br>
+
+    <label>Project Link:</label>
+    <input type="text" name="link" value="<%= project.link %>" /><br><br>
+
+    <label>Project Image:</label>
+    <input type="file" name="image" accept="image/*" /><br>
+    <img src="<%= project.image %>" alt="Project Image" width="200px" style="margin-top:10px;"><br><br>
+
+    <button type="submit">Update Project</button>
+  </form>
+</body>
+</html>
