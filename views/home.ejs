@@ -95,26 +95,26 @@
             </div>
                <div class="line"></div>
 
-            <div class="project" id="project">
-                <h1>Projects</h1>
-                <div class="project-list">
-                   <% if(project) {%>
-                  <%for(proj of project){%>
-                    <div class="box">
-              <div class="img-container">
-                <img src="<%=proj.image%>" alt="Weather App">
-                <a href="<%=proj.link%>" target="_blank" class="view-link">
-                  <i class="fa-solid fa-eye"></i>
-                </a>
-              </div>
-              <h4><%=proj.title%></h4>
-              <p><%=proj.description%></p>
-            </div>
-                    <%}%>
-                    <%}%>
-                       
-                </div>
-            </div>
+          <div class="project" id="project">
+             <h1>Projects</h1>
+  <div class="project-list">
+    <% if(project) { %>
+      <% for (let proj of project.slice().reverse()) { %>
+        <div class="box">
+          <div class="img-container">
+            <img src="<%=proj.image%>" alt="Weather App">
+            <a href="<%=proj.link%>" target="_blank" class="view-link">
+              <i class="fa-solid fa-eye"></i>
+            </a>
+          </div>
+          <h4><%=proj.title%></h4>
+          <p><%=proj.description%></p>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+</div>
+
                <div class="line"></div>
 
             <div class="contact" id="contact">
