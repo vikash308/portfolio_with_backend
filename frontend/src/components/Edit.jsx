@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import server from "../Api";
-import "./admin.css";
+import "./Admin.css";
 
 const Edit = () => {
   const { id } = useParams();
