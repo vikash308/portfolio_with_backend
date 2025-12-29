@@ -6,86 +6,70 @@ const Project = require("../model/project")
 const multer = require("multer");
 const { cloudinary, storage } = require("../cloudinary");
 const upload = multer({ storage });
+const jwt = require("jsonwebtoken");
+const jwtAuth = require('../middleware/auth')
 
 
-function isAuth(req, res, next) {
-    if (req.session.isAuth) {
-        next();
-    } else {
-        res.redirect("/login");
+
+router.get("/admin", jwtAuth, async (req, res) => {
+    const main = await Main.findOne().populate("project");
+
+    if (!main) {
+        return res.status(404).json({ message: "Profile not found" });
     }
-}
 
-router.get("/", async (req, res) => {
-    let main = await Main.findOne({});
+    res.json({
+        user: req.user.username,
+        main
+    });
+});
+
+
+router.get("/portfolio", async (req, res) => {
+    let main = await Main.findOne().populate("project");
     if(!main){
-       let main2 = new Main({
+       main = new Main({
         about:"its about section",
-        skills:'html'
+        skills:['html'],
+        project:[]
        })
-       await main2.save();
+       await main.save();
     }
-
-    let project = await Project.find()
-    if(!project){
-       let project2 = new Project({
-         title:"weather app",
-        description:"it is a weather app",
-        link:"enter link here"
-       })
-       await project2.save();
-
-    }
-    res.render("home", { main, project })
+    res.json(main);
 })
 
-
-
-router.get("/login", (req, res) => {
-    res.render("login", { message: "" })
-})
 
 router.post("/login", async (req, res) => {
     let { username, password } = req.body;
-    console.log(username, password)
-    if (!username || !password) return res.render("login", { message: "invalid credentials" });
+
+    if (!username || !password) return res.status(400).json({ message: "invalid credentials" });
 
     let user = await User.findOne({ username });
-    if (!user) return res.render("login", { message: "not matched" })
-
-    if (user.password != password) return render("login", { message: "not match" })
-
-    req.session.isAuth = true;
-    req.session.user = user.username;
+    if (!user || user.password !== password) return res.status(401).json({ message: "invalid username or password" })
 
 
-    res.redirect("/admin")
+    const token = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    );
+
+
+    res.json({ message: "Login successful",token, user: user.username });
 })
 
-router.get("/admin", isAuth, async (req, res) => {
-    let main = await Main.findOne().populate("project")
-    res.render("admin", { main, user: req.session.user })
-})
-
-router.get("/admin/logout",isAuth, (req, res) => {
-    req.session.destroy(err => {
-        if (err) console.log(err);
-        res.redirect("/");
-    });
-})
-
-router.post("/admin/update-about",isAuth, async (req, res) => {
+router.put("/admin/about",jwtAuth, async (req, res) => {
     let { about } = req.body;
 
     let main = await Main.findOne()
-    if (main) {
-        main.about = about;
-        await main.save();
-    }
-    res.redirect("/admin")
+    if (!main) return res.status(404).json({ message: "Profile not found" });
+
+    main.about = about;
+    await main.save();
+    res.json({ message: "About updated", about });
 })
 
-router.post("/admin/add-skill",isAuth, async (req, res) => {
+router.post("/admin/skill",jwtAuth, async (req, res) => {
     let { skill } = req.body;
 
     let main = await Main.findOne();
@@ -93,10 +77,10 @@ router.post("/admin/add-skill",isAuth, async (req, res) => {
         main.skills.push(skill)
         await main.save();
     }
-    res.redirect("/admin")
+    res.json({ message: "Skill added", skills: main.skills });
 })
 
-router.get("/admin/delete-skill/:skill",isAuth, async (req, res) => {
+router.delete("/admin/skill/:skill",jwtAuth, async (req, res) => {
     let skill = decodeURIComponent(req.params.skill);
 
     let main = await Main.findOne();
@@ -104,35 +88,27 @@ router.get("/admin/delete-skill/:skill",isAuth, async (req, res) => {
         main.skills = main.skills.filter(s => s !== skill)
         await main.save();
     }
-    res.redirect("/admin")
+    res.json({ message: "Skill removed", skills: main.skills });
 })
 
-router.get("/admin/project-edit/:id",isAuth, async (req, res) => {
-    let id = req.params.id;
-    const project = await Project.findById(id);
-    if (!project) return res.redirect("/admin");
-    res.render("edit", { project })
-})
-
-router.post("/admin/project-edit/:id", upload.single("image"), isAuth, async (req, res) => {
+router.put("/admin/project/:id", upload.single("image"), jwtAuth, async (req, res) => {
     const { id } = req.params;
     const { title, description, link } = req.body;
     const project = await Project.findById(id);
-    if (!project) return res.redirect("/admin");
+    if (!project) return res.status(404).json({ message: "Project not found" });
 
     project.title = title;
     project.description = description;
     project.link = link;
     if (req.file) {
             project.image = req.file.path;
-            await project.save();
     }
         await project.save();
-        res.redirect("/admin");
+    res.json({ message: "Project updated", project });
     
 })
 
-router.get("/admin/project-delete/:id",isAuth, async (req, res) => {
+router.delete("/admin/project/:id",jwtAuth, async (req, res) => {
     let id = req.params.id;
     await Project.findByIdAndDelete(id);
     let main = await Main.findOne();
@@ -141,11 +117,12 @@ router.get("/admin/project-delete/:id",isAuth, async (req, res) => {
         main.project = main.project.filter(pId => pId.toString() !== id)
         await main.save();
     }
-    res.redirect("/admin")
+
+    res.json({ message: "Project deleted" });
 
 })
 
-router.post("/admin/add-project", upload.single("image"),isAuth, async (req, res) => {
+router.post("/admin/project", upload.single("image"),jwtAuth, async (req, res) => {
     let { title, description, link } = req.body
     const image = req.file.path;
 
@@ -159,19 +136,41 @@ router.post("/admin/add-project", upload.single("image"),isAuth, async (req, res
         main.project.push(project._id)
         await main.save();
     }
-    res.redirect("/admin")
+    res.json({ message: "Project added", project });
 
 })
 
-router.post("/admin/profile",upload.single("image"), isAuth, async(req,res)=>{
+router.put("/admin/profile",upload.single("image"), jwtAuth, async(req,res)=>{
     const image = req.file.path;
     let main = await Main.findOne();
     if(main){
         main.image = image;
         await main.save();
     }
-    res.redirect("/admin")
+    res.json({ message: "Profile image updated", image: main.image });
 })
+
+router.get("/admin/project/:id", jwtAuth, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const project = await Project.findById(id);
+
+        if (!project) {
+            return res.status(404).json({ message: "Project not found" });
+        }
+
+        res.status(200).json({
+            message: "Project fetched successfully",
+            project,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error fetching project",
+            error: error.message,
+        });
+    }
+});
 
 
 

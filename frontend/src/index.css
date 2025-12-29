@@ -1,0 +1,32 @@
+:root {
+  --bg-black: hsl(0, 0%, 7%);
+  --bg-black-2: hsl(240, 2%, 12%);
+  --sec-black: #2b2b2c;
+  --font-color: #f4f1f1;
+  --orange-font: hsl(45, 100%, 72%);
+  --border: 1px solid rgba(255, 255, 255, 0.2);
+  --shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
+  --transition: all 0.3s ease;
+}
+
+.light-theme {
+  --bg-black: #f5f5f5;
+  --bg-black-2: #ccc;
+  --sec-black: #fff;
+  --font-color: #121212;
+  --orange-font: orangered;
+  --border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--bg-black);
+  color: var(--font-color);
+  transition: var(--transition);
+}
