@@ -34,6 +34,16 @@ const Information = ({image}) => {
             <span> GitHub</span>
           </a>
         </div>
+        <div className="contact-item">
+          <a
+            href="https://leetcode.com/u/vikash6203vikash/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i className="fa-solid fa-code"></i>
+            <span> LeetCode</span>
+          </a>
+        </div>
 
         <div className="contact-item">
           <i className="fa-solid fa-phone"></i>

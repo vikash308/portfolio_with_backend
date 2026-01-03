@@ -5,7 +5,7 @@ const About = ({ about, skills }) => {
     <div className="about">
       <h1>About Me</h1>
 
-      <p>{about}</p>
+      <p>{about? about : "Wait sometime until the data is loaded from server. Its dynamic portfolio data show from database"}</p>
 
       <div className="line"></div>
 
